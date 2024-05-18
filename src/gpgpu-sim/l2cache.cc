@@ -505,6 +505,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
       mf->decomp_cycle = m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle;
       m_decomp_q->push(mf);
       m_dram_L2_queue->pop();
+      printf("%u, %u",cycle, m_decomp_q->front()->decomp_cycle);
     }
     if(m_decomp_q->front()->decomp_cycle > m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle + 11) {
       mem_fetch *mf = m_decomp_q->front();
