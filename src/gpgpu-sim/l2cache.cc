@@ -493,7 +493,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
   if (!m_dram_L2_queue->empty()) {
     mem_fetch *mf = m_dram_L2_queue->top();
     //printf("sup %u warp %u Dsize %u\n",mf->get_sub_partition_id(),mf->get_wid(),mf->get_data_size());
-    printf("%llu, %u\n",m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle, cycle);
+    //printf("%llu, %u\n",m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle, cycle);
     //schedule decompression per memory controller.
     //2060 : 12 memctrl per GPU, 2 subpartition per 1 memctrl.
 
@@ -522,7 +522,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
           m_decomp_q->pop();
       }
     }
-
+    /*
     if (!m_config->m_L2_config.disabled() && m_L2cache->waiting_for_fill(mf)) {
       if (m_L2cache->fill_port_free()) {
         mf->set_status(IN_PARTITION_L2_FILL_QUEUE,
@@ -538,7 +538,9 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
       m_L2_icnt_queue->push(mf);
       //m_dram_L2_queue->pop();
     }
+    */
   }
+  
 
   // prior L2 misses inserted into m_L2_dram_queue here
   if (!m_config->m_L2_config.disabled()) m_L2cache->cycle();
