@@ -196,7 +196,7 @@ enum _memory_op_t { no_memory_op = 0, memory_load, memory_store };
 #include <map>
 #include <vector>
 
-#include "./gpgpu-sim/mem_fetch.h"
+#include "./gpgpu-sim/dram.h"
 
 #if !defined(__VECTOR_TYPES_H__)
 #include "vector_types.h"
