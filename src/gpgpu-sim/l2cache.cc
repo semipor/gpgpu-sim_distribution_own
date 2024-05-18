@@ -425,7 +425,7 @@ memory_sub_partition::memory_sub_partition(unsigned sub_partition_id,
   m_stats = stats;
   m_gpu = gpu;
   m_memcpy_cycle_offset = 0;
-  m_decomp_q = &gpu->dcomp_q;
+  m_decomp_q = &gpu->decomp_q;
 
   assert(m_id < m_config->m_n_mem_sub_partition);
 
