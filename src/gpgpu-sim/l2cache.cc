@@ -497,12 +497,12 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
     //schedule decompression per memory controller.
     //2060 : 12 memctrl per GPU, 2 subpartition per 1 memctrl.
 
-    if(m_decomp_q.size() < 12){
+    if(m_decomp_q->size() < 12){
       mf->decomp_cycle = m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle;
-      m_decomp_q.push(mf);
+      m_decomp_q->push(mf);
       m_dram_L2_queue->pop();
     }
-    if(m_decomp_q.front()->decomp_cycle > m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle + 11) {
+    if(m_decomp_q->front()->decomp_cycle > m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle + 11) {
       mem_fetch *mf = m_decomp_q->front();
       if (!m_config->m_L2_config.disabled() && m_L2cache->waiting_for_fill(mf)) {
         if (m_L2cache->fill_port_free()) {
@@ -511,7 +511,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
           m_L2cache->fill(mf, m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle +
                                 m_memcpy_cycle_offset);
           //m_dram_L2_queue->pop();
-          m_decomp_q.pop();
+          m_decomp_q->pop();
         }
       } else if (!m_L2_icnt_queue->full()) {
           if (mf->is_write() && mf->get_type() == WRITE_ACK)
@@ -519,7 +519,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
                        m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
           m_L2_icnt_queue->push(mf);
           //m_dram_L2_queue->pop();
-          m_decomp_q.pop();
+          m_decomp_q->pop();
       }
     }
 
