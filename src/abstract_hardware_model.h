@@ -196,8 +196,6 @@ enum _memory_op_t { no_memory_op = 0, memory_load, memory_store };
 #include <map>
 #include <vector>
 
-#include "./gpgpu-sim/dram.h"
-
 #if !defined(__VECTOR_TYPES_H__)
 #include "vector_types.h"
 #endif
@@ -596,8 +594,6 @@ class gpgpu_t {
   unsigned resume_CTA;
   unsigned checkpoint_CTA_t;
   int checkpoint_insn_Y;
-
-  std::queue<*mem_fetch> decomp_q;
 
   // Move some cycle core stats here instead of being global
   unsigned long long gpu_sim_cycle;
