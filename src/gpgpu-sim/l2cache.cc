@@ -498,6 +498,9 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
     //schedule decompression per memory controller.
     //2060 : 12 memctrl per GPU, 2 subpartition per 1 memctrl.
 
+    if(m_dram_L2_queue->full()) {
+      printf("dram_L2_q FULL!\n");
+    }
     if(m_decomp_q->size() < 12){
       mf->decomp_cycle = m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle;
       m_decomp_q->push(mf);
