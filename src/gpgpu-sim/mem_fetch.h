@@ -128,6 +128,8 @@ class mem_fetch {
   mem_fetch *get_original_mf() { return original_mf; }
   mem_fetch *get_original_wr_mf() { return original_wr_mf; }
 
+  unsigned long long decomp_cycle;
+
  private:
   // request source information
   unsigned m_request_uid;

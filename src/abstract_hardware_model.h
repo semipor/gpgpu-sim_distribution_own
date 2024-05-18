@@ -594,6 +594,8 @@ class gpgpu_t {
   unsigned checkpoint_CTA_t;
   int checkpoint_insn_Y;
 
+  std::queue<*mem_fetch> decomp_q;
+
   // Move some cycle core stats here instead of being global
   unsigned long long gpu_sim_cycle;
   unsigned long long gpu_tot_sim_cycle;
