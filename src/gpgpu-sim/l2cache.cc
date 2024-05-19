@@ -503,7 +503,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
       m_dram_L2_queue->pop();
       printf("%u, %u\n",cycle, m_decomp_q->front()->decomp_cycle);
     }
-    printf("%u", m_decomp_q->size());
+    printf("cur_size : %u\n", m_decomp_q->size());
     if(m_decomp_q->front()->decomp_cycle + 11 < cycle) {
       mem_fetch *mf = m_decomp_q->front();
       if (!m_config->m_L2_config.disabled() && m_L2cache->waiting_for_fill(mf)) {
