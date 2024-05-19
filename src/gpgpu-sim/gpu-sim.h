@@ -598,8 +598,6 @@ class gpgpu_sim : public gpgpu_t {
    */
   simt_core_cluster *getSIMTCluster();
 
-  std::queue<unsigned long long> decomp_q;
-
   void hit_watchpoint(unsigned watchpoint_num, ptx_thread_info *thd,
                       const ptx_instruction *pI);
 

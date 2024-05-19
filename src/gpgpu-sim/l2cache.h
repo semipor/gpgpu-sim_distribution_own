@@ -205,8 +205,6 @@ class memory_sub_partition {
     m_memcpy_cycle_offset += 1;
   }
 
-  std::queue<unsigned long long> *m_decomp_q;
-
  private:
   // data
   unsigned m_id;  //< the global sub partition ID
