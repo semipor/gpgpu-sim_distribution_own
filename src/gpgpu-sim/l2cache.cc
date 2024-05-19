@@ -512,6 +512,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
         m_L2cache->fill(mf, m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle +
                                 m_memcpy_cycle_offset);
         m_dram_L2_queue->pop();
+        printf("%u\n",cycle);
       }
     } else if (!m_L2_icnt_queue->full()) {
       if (mf->is_write() && mf->get_type() == WRITE_ACK)
