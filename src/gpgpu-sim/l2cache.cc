@@ -518,6 +518,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
         mf->set_status(IN_PARTITION_L2_TO_ICNT_QUEUE,
                        m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
       m_L2_icnt_queue->push(mf);
+      printf("%u\n",cycle);
       m_dram_L2_queue->pop();
     }
   }
