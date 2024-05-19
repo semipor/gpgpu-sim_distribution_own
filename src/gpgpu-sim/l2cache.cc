@@ -447,7 +447,7 @@ memory_sub_partition::memory_sub_partition(unsigned sub_partition_id,
          &dram_L2, &L2_icnt);
   m_icnt_L2_queue = new fifo_pipeline<mem_fetch>("icnt-to-L2", 0, icnt_L2);
   m_L2_dram_queue = new fifo_pipeline<mem_fetch>("L2-to-dram", 0, L2_dram);
-  m_dram_L2_queue = new fifo_pipeline<mem_fetch>("dram-to-L2", 0, dram_L2*10);
+  m_dram_L2_queue = new fifo_pipeline<mem_fetch>("dram-to-L2", 0, dram_L2);
   m_L2_icnt_queue = new fifo_pipeline<mem_fetch>("L2-to-icnt", 0, L2_icnt);
   wb_addr = -1;
 }
@@ -501,8 +501,9 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
       mf->decomp_cycle = m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle;
       m_decomp_q->push(mf);
       m_dram_L2_queue->pop();
-      //printf("%u, %u\n",cycle, m_decomp_q->front()->decomp_cycle);
+      printf("%u, %u\n",cycle, m_decomp_q->front()->decomp_cycle);
     }
+    printf("%u", m_decomp_q->size());
     if(m_decomp_q->front()->decomp_cycle + 11 < cycle) {
       mem_fetch *mf = m_decomp_q->front();
       if (!m_config->m_L2_config.disabled() && m_L2cache->waiting_for_fill(mf)) {
