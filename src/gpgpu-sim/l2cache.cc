@@ -503,7 +503,25 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
       m_dram_L2_queue->pop();
       printf("%u, %u\n",cycle, m_decomp_q->front()->decomp_cycle);
     }
-    printf("cur_size : %u\n", m_decomp_q->size());
+    /*
+    if (!m_config->m_L2_config.disabled() && m_L2cache->waiting_for_fill(mf)) {
+      if (m_L2cache->fill_port_free()) {
+        mf->set_status(IN_PARTITION_L2_FILL_QUEUE,
+                       m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
+        m_L2cache->fill(mf, m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle +
+                                m_memcpy_cycle_offset);
+        //m_dram_L2_queue->pop();
+      }
+    } else if (!m_L2_icnt_queue->full()) {
+      if (mf->is_write() && mf->get_type() == WRITE_ACK)
+        mf->set_status(IN_PARTITION_L2_TO_ICNT_QUEUE,
+                       m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
+      m_L2_icnt_queue->push(mf);
+      //m_dram_L2_queue->pop();
+    }
+    */
+  }
+  printf("cur_size : %u\n", m_decomp_q->size());
     if(m_decomp_q->front()->decomp_cycle + 11 < cycle) {
       mem_fetch *mf = m_decomp_q->front();
       if (!m_config->m_L2_config.disabled() && m_L2cache->waiting_for_fill(mf)) {
@@ -524,24 +542,6 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
           m_decomp_q->pop();
       }
     }
-    /*
-    if (!m_config->m_L2_config.disabled() && m_L2cache->waiting_for_fill(mf)) {
-      if (m_L2cache->fill_port_free()) {
-        mf->set_status(IN_PARTITION_L2_FILL_QUEUE,
-                       m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
-        m_L2cache->fill(mf, m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle +
-                                m_memcpy_cycle_offset);
-        //m_dram_L2_queue->pop();
-      }
-    } else if (!m_L2_icnt_queue->full()) {
-      if (mf->is_write() && mf->get_type() == WRITE_ACK)
-        mf->set_status(IN_PARTITION_L2_TO_ICNT_QUEUE,
-                       m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
-      m_L2_icnt_queue->push(mf);
-      //m_dram_L2_queue->pop();
-    }
-    */
-  }
   
 
   // prior L2 misses inserted into m_L2_dram_queue here
