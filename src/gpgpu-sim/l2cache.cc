@@ -490,6 +490,11 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
     }
   }
 
+  if(m_decomp_q->size() > 0 && m_decomp_q->front()->decomp_cycle + 11 < cycle) {
+    m_decomp_q->pop();
+    printf("cur_size : %u\n", m_decomp_q->size());
+  }
+
   // DRAM to L2 (texture) and icnt (not texture)
   if (!m_dram_L2_queue->empty()) {
     mem_fetch *mf = m_dram_L2_queue->top();
@@ -497,20 +502,23 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
     //printf("%llu, %u\n",m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle, cycle);
     //schedule decompression per memory controller.
     //2060 : 12 memctrl per GPU, 2 subpartition per 1 memctrl.
-    
-    if(m_decomp_q->size() < 30){
+    /*
+    if(m_decomp_q->size() < 12){
       mf->decomp_cycle = m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle;
       m_decomp_q->push(mf);
       m_dram_L2_queue->pop();
       printf("%u, %u\n",cycle, m_decomp_q->front()->decomp_cycle);
     }
-    /*
+    */
     if (!m_config->m_L2_config.disabled() && m_L2cache->waiting_for_fill(mf)) {
-      if (m_L2cache->fill_port_free()) {
+      if (m_L2cache->fill_port_free() && m_decomp_q->size() < 12) {
+        mf->decomp_cycle = m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle;
+        m_decomp_q->push(mf);
+        printf("%u, %u\n",cycle, m_decomp_q->front()->decomp_cycle);
         mf->set_status(IN_PARTITION_L2_FILL_QUEUE,
                        m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
         m_L2cache->fill(mf, m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle +
-                                m_memcpy_cycle_offset);
+                                m_memcpy_cycle_offset + 11);
         m_dram_L2_queue->pop();
       }
     } else if (!m_L2_icnt_queue->full()) {
@@ -519,10 +527,11 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
                        m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
       m_L2_icnt_queue->push(mf);
       m_dram_L2_queue->pop();
+      printf("L2 PASSED!\n");
     }
-    */
+    
   }
-
+  /*
   if(m_decomp_q->size() > 0 && m_decomp_q->front()->decomp_cycle + 11 < cycle) {
     printf("cur_size : %u\n", m_decomp_q->size());
     mem_fetch *mf = m_decomp_q->front();
@@ -542,6 +551,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
         m_decomp_q->pop();
     }
   }
+  */
   
 
   // prior L2 misses inserted into m_L2_dram_queue here
