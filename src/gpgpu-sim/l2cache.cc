@@ -492,7 +492,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
 
   if(m_decomp_q->size() > 0 && m_decomp_q->front() + 11 < m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle) {
     m_decomp_q->pop();
-    printf("cur_size : %u\n", m_decomp_q->size());
+    //printf("cur_size : %u\n", m_decomp_q->size());
   }
 
   // DRAM to L2 (texture) and icnt (not texture)
@@ -513,7 +513,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
     if (!m_config->m_L2_config.disabled() && m_L2cache->waiting_for_fill(mf)) {
       if (m_L2cache->fill_port_free() && m_decomp_q->size() < 12) {
         m_decomp_q->push(m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
-        printf("%u, %llu\n",cycle, m_decomp_q->front());
+        //printf("%u, %llu\n",cycle, m_decomp_q->front());
         mf->set_status(IN_PARTITION_L2_FILL_QUEUE,
                        m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
         m_L2cache->fill(mf, m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle +
@@ -526,7 +526,7 @@ void memory_sub_partition::cache_cycle(unsigned cycle) {
                        m_gpu->gpu_sim_cycle + m_gpu->gpu_tot_sim_cycle);
       m_L2_icnt_queue->push(mf);
       m_dram_L2_queue->pop();
-      printf("L2 PASSED!\n");
+      //printf("L2 PASSED!\n");
     }
     
   }
